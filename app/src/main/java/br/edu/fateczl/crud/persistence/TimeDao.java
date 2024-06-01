@@ -94,10 +94,10 @@ public class TimeDao implements ITimeDao, ICRUDDao<Time> {
                 times.add(time);
             } while (cursor.moveToNext());
             cursor.close();
+        }
 
-        }
-            return times;
-        }
+        return times;
+    }
 
         private static ContentValues getContentValues(Time time) {
             ContentValues contentValues = new ContentValues();

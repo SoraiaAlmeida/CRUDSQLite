@@ -35,19 +35,12 @@ public class JogadorDao implements IJogadorDao, ICRUDDao<Jogador> {
     }
     @Override
     public void insert(Jogador jogador) throws java.sql.SQLException {
-        if (jogadorExiste(jogador.getId())) {
-            throw new SQLException("ID já existente");
+        try {
+            ContentValues contentValues = getcontentValues(jogador);
+            database.insertOrThrow("jogador", null, contentValues);
+        } catch (android.database.sqlite.SQLiteConstraintException e) {
+            throw new java.sql.SQLException("ID já existe. Escolha um ID diferente.");
         }
-        ContentValues contentValues = getcontentValues(jogador);
-        database.insert("jogador", null, contentValues);
-    }
-
-    private boolean jogadorExiste(int id) {
-        String sql = "SELECT id FROM jogador WHERE id = ?";
-        Cursor cursor = database.rawQuery(sql, new String[]{String.valueOf(id)});
-        boolean exists = (cursor != null && cursor.getCount() > 0);
-        if (cursor != null) cursor.close();
-        return exists;
     }
 
 

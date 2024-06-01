@@ -16,30 +16,28 @@ public class JogadorController implements IController<Jogador>{
 
     @Override
     public void insert(Jogador jogador) throws SQLException {
-        jDao.open();
-        try {
-            jDao.insert(jogador);
-        } finally {
-            jDao.close();
+        if (jDao.open() == null){
+            jDao.open();
         }
+        jDao.insert(jogador);
+        jDao.close();
+
     }
     @Override
     public void modificar(Jogador jogador) throws SQLException {
-        jDao.open();
-        try {
-            jDao.update(jogador);
-        } finally {
-            jDao.close();
+        if (jDao.open() == null){
+            jDao.open();
         }
+        jDao.update(jogador);
+        jDao.close();
     }
     @Override
     public void delete(Jogador jogador) throws SQLException {
-        jDao.open();
-        try {
-            jDao.delete(jogador);
-        } finally {
-            jDao.close();
+        if (jDao.open() == null){
+            jDao.open();
         }
+        jDao.delete(jogador);
+        jDao.close();
     }
 
     @Override
@@ -51,7 +49,6 @@ public class JogadorController implements IController<Jogador>{
             jDao.close();
         }
     }
-
     @Override
     public List<Jogador> listar() throws SQLException {
         jDao.open();

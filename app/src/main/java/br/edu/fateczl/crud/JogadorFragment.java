@@ -84,9 +84,13 @@ public class JogadorFragment extends Fragment {
 
         try {
             times = tCont.listar();
-            times.add(0, t0);
+            if (times.isEmpty()) {
+                times.add(t0);
+            } else {
+                times.add(0, t0);
+            }
 
-            ArrayAdapter ad = new ArrayAdapter(view.getContext(),
+            ArrayAdapter ad = new ArrayAdapter<>(view.getContext(),
                     android.R.layout.simple_spinner_item,
                     times);
             ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

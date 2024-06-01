@@ -17,23 +17,22 @@ public class TimeController implements IController<Time> {
 
     @Override
     public void insert(Time time) throws SQLException {
-        tDao.open();
-        try {
-            tDao.insert(time);
-        } finally {
-            tDao.close();
+        if (tDao.open() == null){
+            tDao.open();
         }
+        tDao.insert(time);
+        tDao.close();
     }
 
     @Override
     public void modificar(Time time) throws SQLException {
-        tDao.open();
-        try {
-            tDao.update(time);
-        } finally {
-            tDao.close();
+        if (tDao.open() == null){
+            tDao.open();
         }
+        tDao.update(time);
+        tDao.close();
     }
+
     @Override
     public void delete(Time time) throws SQLException {
         tDao.open();
@@ -54,11 +53,9 @@ public class TimeController implements IController<Time> {
     }
     @Override
     public List<Time> listar() throws SQLException {
-        tDao.open();
-        try {
-            return tDao.findAll();
-        } finally {
-            tDao.close();
+        if (tDao.open() == null) {
+            tDao.open();
         }
+        return tDao.findAll();
     }
 }
