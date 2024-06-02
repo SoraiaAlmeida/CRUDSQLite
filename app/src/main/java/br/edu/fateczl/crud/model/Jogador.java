@@ -8,12 +8,11 @@ public class Jogador {
 
     private int id;
     private String nome;
-    private LocalDate dataNasc;
+    private String dataNasc;
     private float altura;
     private float peso;
     private Time time;
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public int getId() {
         return id;
@@ -30,34 +29,30 @@ public class Jogador {
     public void setNome(String nome) {
         this.nome = nome;
     }
-
-
-
-    public LocalDate getDataNasc() {
+    public String getDataNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(LocalDate dataNasc) {
+    public void setDataNasc(String dataNasc) {
         this.dataNasc = dataNasc;
     }
 
-    public void setDataNasc(String dataNasc) {
-        this.dataNasc = LocalDate.parse(dataNasc, formatter);
+    public LocalDate getDataNascAsLocalDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(this.dataNasc, formatter);
     }
 
-    public String getDataNascString() {
-        return dataNasc.format(formatter);
-    }
-
-    public String getDataNascAsString() {
-        return dataNasc.format(formatter);
-    }
-    public float getAltura() {
-        return altura;
+    public void setDataNascFromLocalDate(LocalDate dataNasc) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.dataNasc = dataNasc.format(formatter);
     }
 
     public void setAltura(float altura) {
         this.altura = altura;
+    }
+
+    public float getAltura() {
+        return altura;
     }
 
     public float getPeso() {

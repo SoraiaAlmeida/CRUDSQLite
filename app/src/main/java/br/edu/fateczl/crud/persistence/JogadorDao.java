@@ -64,16 +64,16 @@ public class JogadorDao implements IJogadorDao, ICRUDDao<Jogador> {
         Cursor cursor = database.rawQuery(sql, null);
 
         //if (cursor != null) {
-            //cursor.moveToFirst();
+        //cursor.moveToFirst();
 
-            //if (!cursor.isAfterLast()) {
+        //if (!cursor.isAfterLast()) {
 
         if (cursor != null && cursor.moveToFirst()) {
-                jogador.setId(cursor.getInt(cursor.getColumnIndex("id")));
-                jogador.setNome(cursor.getString(cursor.getColumnIndex("nome")));
-                jogador.setDataNasc(cursor.getString(cursor.getColumnIndex("data_nasc")));
-                jogador.setAltura(cursor.getFloat(cursor.getColumnIndex("altura")));
-                jogador.setPeso(cursor.getFloat(cursor.getColumnIndex("peso")));
+            jogador.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            jogador.setNome(cursor.getString(cursor.getColumnIndex("nome")));
+            jogador.setDataNasc(cursor.getString(cursor.getColumnIndex("data_nasc")));
+            jogador.setAltura(cursor.getFloat(cursor.getColumnIndex("altura")));
+            jogador.setPeso(cursor.getFloat(cursor.getColumnIndex("peso")));
 
             Time time = new Time();
             time.setCodigo(cursor.getInt(cursor.getColumnIndex("timeCodigo")));
@@ -85,6 +85,7 @@ public class JogadorDao implements IJogadorDao, ICRUDDao<Jogador> {
             return null;
         }
     }
+
     @SuppressLint("Range")
     @Override
     public List<Jogador> findAll() throws java.sql.SQLException {
@@ -92,8 +93,9 @@ public class JogadorDao implements IJogadorDao, ICRUDDao<Jogador> {
         String sql = "SELECT id, nome, data_nasc, altura, peso, timeCodigo FROM jogador";
         Cursor cursor = database.rawQuery(sql, null);
 
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
+        if (cursor != null) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
                 Jogador jogador = new Jogador();
                 jogador.setId(cursor.getInt(cursor.getColumnIndex("id")));
                 jogador.setNome(cursor.getString(cursor.getColumnIndex("nome")));
@@ -106,7 +108,8 @@ public class JogadorDao implements IJogadorDao, ICRUDDao<Jogador> {
                 jogador.setTime(time);
 
                 jogadores.add(jogador);
-            } while (cursor.moveToNext());
+                cursor.moveToNext();
+            }
             cursor.close();
         }
         return jogadores;

@@ -139,28 +139,35 @@ public class JogadorFragment extends Fragment {
     }
 
     private void acaoExcluir() {
-        Jogador jogador = montajogador();
         try {
+            int id = Integer.parseInt(etIDJogador.getText().toString());
+            Jogador jogador = new Jogador();
+            jogador.setId(id);
             jCont.delete(jogador);
-            Toast.makeText(view.getContext(), "Jogador Excluido com Sucesso!",
+            Toast.makeText(view.getContext(), "Jogador Excluído com Sucesso!",
                     Toast.LENGTH_LONG).show();
+            limpaCampos();
+        } catch (NumberFormatException e) {
+            Toast.makeText(view.getContext(), "ID inválido", Toast.LENGTH_LONG).show();
         } catch (SQLException e) {
             Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
-        limpaCampos();
     }
 
     private void acaoBuscar() {
-        Jogador jogador = montajogador();
         try {
+            int id = Integer.parseInt(etIDJogador.getText().toString());
+            Jogador jogador = null;
             jogador = jCont.buscar(jogador);
-            if (jogador.getNome() != null) {
+            if (jogador != null) {
                 preencherCampos(jogador);
             } else {
                 Toast.makeText(view.getContext(), "Jogador Não Encontrado!",
                         Toast.LENGTH_LONG).show();
                 limpaCampos();
             }
+        } catch (NumberFormatException e) {
+            Toast.makeText(view.getContext(), "ID inválido", Toast.LENGTH_LONG).show();
         } catch (SQLException e) {
             Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -169,7 +176,7 @@ public class JogadorFragment extends Fragment {
     private void acaoListar() {
         try {
             List<Jogador> jogadores = jCont.listar();
-            StringBuilder  buffer = new StringBuilder ();
+            StringBuffer   buffer = new StringBuffer();
             for (Jogador j : jogadores) {
                 buffer.append(j.toString() + "\n");
             }
@@ -181,14 +188,18 @@ public class JogadorFragment extends Fragment {
 
     private Jogador montajogador() {
         Jogador j = new Jogador();
-        j.setId(Integer.parseInt(etIDJogador.getText().toString()));
-        j.setNome(etNomeJogador.getText().toString());
-        j.setDataNasc(etDataNascJogador.getText().toString());  // A data está em formato String "dd/MM/yyyy"
-        j.setAltura(Float.parseFloat(etAlturaJogador.getText().toString()));
-        j.setPeso(Float.parseFloat(etPesoJogador.getText().toString()));
-        j.setTime((Time) spTimeJog.getSelectedItem());
-        return j;
+        try {
+            j.setId(Integer.parseInt(etIDJogador.getText().toString()));
+            j.setNome(etNomeJogador.getText().toString());
+            j.setDataNasc(etDataNascJogador.getText().toString());
+            j.setAltura(Float.parseFloat(etAlturaJogador.getText().toString()));
+            j.setPeso(Float.parseFloat(etPesoJogador.getText().toString()));
+            j.setTime((Time) spTimeJog.getSelectedItem());
+        } catch (Exception e) {
+            Toast.makeText(view.getContext(), "Por favor, preencha todos os campos.", Toast.LENGTH_LONG).show();
         }
+        return j;
+    }
 
 
     public void preencherCampos(Jogador j) {

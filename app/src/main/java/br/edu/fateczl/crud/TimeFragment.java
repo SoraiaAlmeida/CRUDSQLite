@@ -17,12 +17,11 @@ import android.widget.Toast;
 import java.sql.SQLException;
 import java.util.List;
 
-import br.edu.fateczl.crud.controller.JogadorController;
+
 import br.edu.fateczl.crud.controller.TimeController;
-import br.edu.fateczl.crud.model.Jogador;
 import br.edu.fateczl.crud.model.Time;
 import br.edu.fateczl.crud.persistence.TimeDao;
-import br.edu.fateczl.crud.controller.TimeController;
+
 
 
 public class TimeFragment extends Fragment {

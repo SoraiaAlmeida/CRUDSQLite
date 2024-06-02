@@ -20,7 +20,7 @@ public class GenericDao extends SQLiteOpenHelper {
             "CREATE TABLE jogador ( " +
                     "id INT NOT NULL PRIMARY KEY, "+
                     "nome VARCHAR(100) NOT NULL," +
-                    "data_nasc VARCHAR(100) NOT NULL," +
+                    "data_nasc VARCHAR(10) NOT NULL," +
                     "altura DECIMAL(4, 2) NOT NULL," +
                     "peso DECIMAL(4, 1) NOT NULL," +
                     "TimeCodigo INT," +
