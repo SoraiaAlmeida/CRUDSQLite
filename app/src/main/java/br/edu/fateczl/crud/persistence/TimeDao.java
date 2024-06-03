@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.fateczl.crud.model.Jogador;
 import br.edu.fateczl.crud.model.Time;
 
 public class TimeDao implements ITimeDao, ICRUDDao<Time> {

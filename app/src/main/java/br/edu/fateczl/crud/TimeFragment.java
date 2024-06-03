@@ -115,7 +115,6 @@ public class TimeFragment extends Fragment {
             Toast.makeText(view.getContext(), "Erro ao montar o time", Toast.LENGTH_LONG).show();
             return;
         }
-
         try {
             time = tCont.buscar(time);
             if (time != null && time.getNome() != null) {

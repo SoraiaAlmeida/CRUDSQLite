@@ -33,11 +33,12 @@ public class JogadorController implements IController<Jogador>{
     }
     @Override
     public void delete(Jogador jogador) throws SQLException {
-        if (jDao.open() == null){
-            jDao.open();
+        jDao.open();
+        try {
+            jDao.delete(jogador);
+        } finally {
+            jDao.close();
         }
-        jDao.delete(jogador);
-        jDao.close();
     }
 
     @Override
@@ -51,11 +52,9 @@ public class JogadorController implements IController<Jogador>{
     }
     @Override
     public List<Jogador> listar() throws SQLException {
-        jDao.open();
-        try {
-            return jDao.findAll();
-        } finally {
-            jDao.close();
+        if (jDao.open() == null){
+            jDao.open();
         }
+        return jDao.findAll();
     }
 }

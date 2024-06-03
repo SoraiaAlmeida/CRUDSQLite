@@ -29,24 +29,14 @@ public class Jogador {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getDataNasc() {
+
+    public String getDtNasc() {
         return dataNasc;
     }
 
-    public void setDataNasc(String dataNasc) {
-        this.dataNasc = dataNasc;
+    public void setDtNasc(String dtNasc) {
+        this.dataNasc = dtNasc;
     }
-
-    public LocalDate getDataNascAsLocalDate() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        return LocalDate.parse(this.dataNasc, formatter);
-    }
-
-    public void setDataNascFromLocalDate(LocalDate dataNasc) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        this.dataNasc = dataNasc.format(formatter);
-    }
-
     public void setAltura(float altura) {
         this.altura = altura;
     }

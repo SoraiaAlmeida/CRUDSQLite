@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 import br.edu.fateczl.crud.controller.JogadorController;
@@ -75,32 +76,6 @@ public class JogadorFragment extends Fragment {
         return view;
     }
 
-
-    private void preencheSpinner() {
-        Time t0 = new Time();
-        t0.setCodigo(0);
-        t0.setNome("Selecione um Time");
-        t0.setCidade("");
-
-        try {
-            times = tCont.listar();
-            if (times.isEmpty()) {
-                times.add(t0);
-            } else {
-                times.add(0, t0);
-            }
-
-            ArrayAdapter ad = new ArrayAdapter<>(view.getContext(),
-                    android.R.layout.simple_spinner_item,
-                    times);
-            ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spTimeJog.setAdapter(ad);
-
-        } catch (SQLException e) {
-            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
     private void acaoInserir() {
         int spPos = spTimeJog.getSelectedItemPosition();
         if (spPos > 0) {
@@ -139,44 +114,38 @@ public class JogadorFragment extends Fragment {
     }
 
     private void acaoExcluir() {
+        Jogador jogador = montajogador();
         try {
-            int id = Integer.parseInt(etIDJogador.getText().toString());
-            Jogador jogador = new Jogador();
-            jogador.setId(id);
             jCont.delete(jogador);
             Toast.makeText(view.getContext(), "Jogador Excluído com Sucesso!",
                     Toast.LENGTH_LONG).show();
-            limpaCampos();
-        } catch (NumberFormatException e) {
-            Toast.makeText(view.getContext(), "ID inválido", Toast.LENGTH_LONG).show();
-        } catch (SQLException e) {
+           } catch (SQLException e) {
             Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
+        limpaCampos();
     }
 
     private void acaoBuscar() {
+        Jogador jogador = montajogador();
         try {
-            int id = Integer.parseInt(etIDJogador.getText().toString());
-            Jogador jogador = null;
+            times = tCont.listar();
             jogador = jCont.buscar(jogador);
-            if (jogador != null) {
+            if (jogador.getNome() != null){
                 preencherCampos(jogador);
-            } else {
-                Toast.makeText(view.getContext(), "Jogador Não Encontrado!",
-                        Toast.LENGTH_LONG).show();
+            }
+            else{
+                Toast.makeText(view.getContext(),"Jogador não encontrado", Toast.LENGTH_LONG).show();
                 limpaCampos();
             }
-        } catch (NumberFormatException e) {
-            Toast.makeText(view.getContext(), "ID inválido", Toast.LENGTH_LONG).show();
         } catch (SQLException e) {
-            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(),e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
     private void acaoListar() {
         try {
             List<Jogador> jogadores = jCont.listar();
-            StringBuffer   buffer = new StringBuffer();
+            StringBuffer buffer = new StringBuffer();
             for (Jogador j : jogadores) {
                 buffer.append(j.toString() + "\n");
             }
@@ -191,7 +160,9 @@ public class JogadorFragment extends Fragment {
         try {
             j.setId(Integer.parseInt(etIDJogador.getText().toString()));
             j.setNome(etNomeJogador.getText().toString());
-            j.setDataNasc(etDataNascJogador.getText().toString());
+            String dataNasc = etDataNascJogador.getText().toString();
+            if (!dataNasc.isEmpty()) {
+                j.setDtNasc(dataNasc);}
             j.setAltura(Float.parseFloat(etAlturaJogador.getText().toString()));
             j.setPeso(Float.parseFloat(etPesoJogador.getText().toString()));
             j.setTime((Time) spTimeJog.getSelectedItem());
@@ -200,12 +171,10 @@ public class JogadorFragment extends Fragment {
         }
         return j;
     }
-
-
     public void preencherCampos(Jogador j) {
         etIDJogador.setText(String.valueOf(j.getId()));
         etNomeJogador.setText(String.valueOf(j.getNome()));
-        etDataNascJogador.setText(j.getDataNasc().toString());
+        etDataNascJogador.setText(j.getDtNasc());
         etAlturaJogador.setText(String.valueOf(j.getAltura()));
         etPesoJogador.setText(String.valueOf(j.getPeso()));
 
@@ -222,13 +191,34 @@ public class JogadorFragment extends Fragment {
         }
     }
 
-        private void limpaCampos() {
-            etIDJogador.setText("");
-            etNomeJogador.setText("");
-            etDataNascJogador.setText("");
-            etAlturaJogador.setText("");
-            etPesoJogador.setText("");
-            spTimeJog.setSelection(0);
+    private void limpaCampos() {
+        etIDJogador.setText("");
+        etNomeJogador.setText("");
+        etDataNascJogador.setText("");
+        etAlturaJogador.setText("");
+        etPesoJogador.setText("");
+        spTimeJog.setSelection(0);
+    }
+
+    private void preencheSpinner() {
+        Time t0 = new Time();
+        t0.setCodigo(0);
+        t0.setNome("Selecione um Time");
+        t0.setCidade("");
+
+        try {
+            times = tCont.listar();
+            times.add(0, t0);
+
+            ArrayAdapter ad = new ArrayAdapter<>(view.getContext(),
+                    android.R.layout.simple_spinner_item,
+                    times);
+            ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spTimeJog.setAdapter(ad);
+
+        } catch (SQLException e) {
+            Toast.makeText(view.getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+}
 
